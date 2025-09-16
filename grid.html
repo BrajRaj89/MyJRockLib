@@ -1,0 +1,154 @@
+
+<!doctype html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<title>JRock grid Example</title>
+<link rel="stylesheet" href="myjrock.css">
+<!-- user specific style -->
+<style>
+.something
+{
+border:1px solid red;
+width:900px;
+height:430px;
+}
+</style>
+<script>
+class Students
+{
+constructor(rollNumber,name,motherName,fatherName)
+{
+this.rollNumber = rollNumber;
+this.name = name;
+this.motherName = motherName;
+this.fatherName = fatherName;
+}
+}
+class Grid
+{
+constructor(dataTableId,dataTablePagination,students,pageSize)
+{
+this.dataTableId = dataTableId;
+this.dataTablePagination = dataTablePagination;
+this.students = students;
+this.pageSize = pageSize;
+this.pageNumber = 1;
+this.numberOfPaginationControls = 5;
+this.update();
+this.updatePagination();
+}
+update()
+{
+var dataTable =  document.getElementById(this.dataTableId);
+var startAtIndex = (this.pageNumber-1)*this.pageSize;
+var endAtIndex = startAtIndex+this.pageSize-1;
+var td;
+var tr;
+var x;
+for(x=startAtIndex; x<=endAtIndex; x++)
+{
+tr = document.createElement("tr");
+td = document.createElement("td");
+td.innerHTML=x+1;
+tr.appendChild(td);
+td = document.createElement("td");
+td.innerHTML = this.students[x].rollNumber;
+tr.appendChild(td);
+td = document.createElement("td");
+td.innerHTML = this.students[x].name;
+tr.appendChild(td);
+
+td = document.createElement("td");
+td.innerHTML = this.students[x].motherName;
+tr.appendChild(td);
+
+td = document.createElement("td");
+td.innerHTML = this.students[x].fatherName;
+tr.appendChild(td);
+dataTable.appendChild(tr);
+}
+}
+updatePagination()
+{
+    alert('updatePagination');
+var startFrom = ((Math.floor((this.pageNumber-1) / this.numberOfPaginationControls) + 1) - 1) * this.numberOfPaginationControls + 1;
+var endAt = startFrom+this.numberOfPaginationControls-1;
+var numberOfPages = Math.floor(this.students.length/this.pageSize); 
+if(this.students.length%this.pageSize!=0) numberOfPages++;
+if(endAt>numberOfPages) endAt = numberOfPages;
+var dataTablePagination = document.getElementById(this.dataTablePagination);
+var tr = document.createElement("tr");
+var td;
+var anchor;
+if(startFrom>0)
+{
+ td = document.createElement('td');
+anchor = document.createElement('a');
+anchor.innerHTML = '<img src="icons/back.png"></img>';
+anchor.href='abcd';
+td.appendChild(anchor);
+tr.appendChild(td);
+}
+for(var x=startFrom; x<=endAt; x++)
+{
+td  = document.createElement('td');
+anchor = document.createElement('a');
+anchor.text = x;
+anchor.href='abcd';
+td.appendChild(anchor);
+tr.appendChild(td);
+}
+if(endAt<numberOfPages)
+{
+td = document.createElement('td');
+anchor = document.createElement('a');
+anchor.innerHTML = '<img src="icons/forward.png"></img>';
+anchor.href = 'abcd';
+td.appendChild(anchor);
+tr.appendChild(td);
+}
+dataTablePagination.appendChild(tr);
+}
+}
+var model = 
+{
+"grid":null
+}
+function loader()
+{
+var x;
+var students = new Array();
+for(x=101; x<1000; x++)
+{
+students.push(new Students(x,x+'name',x+'motherName',x+'fatherName'));
+}
+model.grid = new Grid('dataTable','dataTablePagination',students,35);
+}
+window.addEventListener('load',loader)
+</script>
+</head>
+<body>
+<div class = 'something'>
+<div class='myjrock_mygrid_head_division'>
+<table class = 'myjrock_mygrid_head'>
+<tr>
+<td>S.no</td>
+<td>RollNumber</td>
+<td>Name</td>
+<td>Mother</td>
+<td>Father</td>
+</tr>
+</table>
+</div>
+<div class='myjrock_mygrid_body_division'>
+<table class='myjrock_mygrid_body' id="dataTable">
+</table>
+</div>
+<div class='myjrock_mygrid_pagination_division'>
+<table class='myjrock_mygrid_pagination' id="dataTablePagination">
+</table>
+</div>
+</div>
+</body>
+</html>

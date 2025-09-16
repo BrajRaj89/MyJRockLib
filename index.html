@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<title>Ajax Example</title>
+<link rel="stylesheet" href="myjrock.css">
+<script src="myjrock.js"></script>
+<script>
+function populateDesignations()
+{
+$$$.ajax({
+"url":"servletOne",
+"methodType":"GET",
+"success":function(responseData)
+{
+var designations = JSON.parse(responseData);
+$$$("designationCode").fillComboBox({
+"dataSource":designations,
+"text":"title",
+"value":"code",
+firstOption:{
+"text":"<select Designation>",
+"value":-1
+}
+});
+},
+"failure":function()
+{
+alert("some problem");
+}
+});
+}
+
+function abBeforeClosing()
+{
+// alert('modal ab is about to close');
+return true;
+}
+function abBeforeOpening()
+{
+// alert('modal ab is about to open');
+return true;
+}
+function abOpened()
+{
+// alert("ab after opening ");
+}
+function abClosed()
+{
+// alert("ab after closing");
+}
+function createFirstModal()
+{
+$$$.modals.show("ab");
+}
+function xyz()
+{
+var box = document.getElementById("myTextBox");
+alert(box);
+}
+
+function saveEnquiry()
+{
+var firstName = $$$("firstName").value();
+var lastName = $$$("lastName").value();
+var age = $$$("age").value();
+var customer = {
+    "firstName":firstName,
+    "lastName":lastName,
+    "age":age
+};
+var whatever = $$$("whatever");
+whatever.html("");
+$$$.ajax(
+{
+"methodType":"POST",
+"url":"servletThree",
+"data":customer,
+"sendJson":true,
+"success":function(responseData,contentType)
+{
+if(contentType.includes("application/json"))
+{
+var customer = JSON.parse(responseData);
+var a = "FirstName :"+customer.firstName+"<br>";
+a  = a+"LastName :"+customer.lastName+"<br>";
+a = a+"Age :"+customer.age;
+whatever.html(a);
+}else
+{
+whatever.html(responseData);
+}
+},
+"failure":function()
+{
+alert('Some Problem');
+}
+});
+}
+
+function getDesignation()
+{
+var code = Number($$$('code').value());
+if(code<=0) 
+{
+alert("Invalid code");
+return;
+}
+$$$.ajax({
+"methodType":"GET",
+"url":"servletTwo",
+"data":
+{
+"code":code
+},
+"success":function(responseData)
+{
+$$$("title").html(responseData);
+},
+"failure":function()
+{
+alert("some problem");
+}
+});
+}
+function doSomething()
+{
+var flag =  $$$("someForm").isValid({
+"nm":{
+    "required":true,
+    "max-length":20,
+    "error_pane":"nmErrorSection",
+    "error":{
+        "required":"Name required",
+        "max-length":"name can not exceed 20 characters"
+    }
+},
+"ad":{
+"required":true,
+"error_pane":"adErrorSection",
+"errors":{
+"required":"Address required"
+}
+},
+"ct":{
+    "invalid":-1,
+    "error_pane":"ctErrorSection",
+    "errors":{
+        "invalid":"select city",
+    }
+},
+"gender":{
+"required":true,
+"error_pane":"genderErrorSection",
+"errors":{
+"required":"Select gender"
+}
+},
+"agree":
+{
+"required_state":true,
+"display_alert":true,
+"errors":
+{
+"required_state":"select I agree checkbox"
+}
+}
+});
+return flag;
+}
+window.addEventListener('load',populateDesignations);
+</script>
+</head>
+<body>
+<h3>Get Type request example</h3>
+<p>automatically fill the dropdown</p>
+<select id='designationCode'>
+</select>
+<hr>
+<h3>Get Type request with data Example</h3>
+<p>Get the designation title by code if code is valid for a designation</p>
+<p>valid code are 2,6,25,73,74,76,77,78,79,80,82</p>
+Enter code<input type='text' id='code'>
+<button type='button' onclick='getDesignation()'>Get Designation</button>
+<br><br>
+Title:- <span id='title' style="color:rgb(206, 1, 1)"></span>
+<br>
+<hr>
+<h3>Post type request Example</h3>
+FirstName <input type='text' id='firstName'>
+<br>
+LastName  <input type='text'id='lastName'>
+<br>
+Age&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' id='age'>
+<br>
+<button type='button' onclick='saveEnquiry()'>Save Data</button>
+<br>
+<span id='whatever'></span>
+<br>
+<hr>
+<div accordian="true">
+<h3>Heading 1</h3>
+<div>
+heading 1 content<br>
+heading 1 content<br>
+heading 1 content
+heading 1 content<br>
+heading 1 content<br>
+heading 1 content
+heading 1 content<br>
+heading 1 content<br>
+heading 1 content
+heading 1 content<br>
+heading 1 content<br>
+heading 1 content<br>
+</div>
+<h3>Heading 2</h3>
+<div>
+heading 2 content<br>
+heading 2 content<br>
+heading 2 content<br>
+heading 2 content
+heading 2 content<br>
+heading 2 content<br>
+heading 2 content<br>
+heading 2 content
+heading 2 content<br>
+heading 2 content<br>
+heading 2 content
+heading 2 content<br>
+</div>
+<h3>Heading 3</h3>
+<div>
+heading 3 content<br>
+heading 3 content<br>
+heading 3 content<br>
+heading 3 content
+heading 3 content<br>
+heading 3 content<br>
+heading 3 content<br>
+heading 3 content
+heading 3 content<br>
+heading 3 content<br>
+heading 3 content
+heading 3 content<br>
+</div>
+</div>
+
+<div accordian="true">
+<h3>Heading 11</h3>
+<div>
+heading 1 content<br>
+heading 1 content<br>
+heading 1 content
+heading 1 content<br>
+heading 1 content<br>
+heading 1 content
+heading 1 content<br>
+heading 1 content<br>
+heading 1 content
+heading 1 content<br>
+heading 1 content<br>
+heading 1 content<br>
+</div>
+<h3>Heading 22</h3>
+<div>
+heading 2 content<br>
+heading 2 content<br>
+heading 2 content<br>
+heading 2 content
+heading 2 content<br>
+heading 2 content<br>
+heading 2 content<br>
+heading 2 content
+heading 2 content<br>
+heading 2 content<br>
+heading 2 content
+heading 2 content<br>
+</div>
+<h3>Heading 33</h3>
+<div>
+heading 3 content<br>
+heading 3 content<br>
+heading 3 content<br>
+heading 3 content
+heading 3 content<br>
+heading 3 content<br>
+heading 3 content<br>
+heading 3 content
+heading 3 content<br>
+heading 3 content<br>
+heading 3 content
+heading 3 content<br>
+</div>
+</div>
+<hr>
+<h3>Model Example</h3>
+<p>click the button to see modal</p>
+<button  type='button' onclick='createFirstModal()'>show modal</button>
+<div style='display:none' id='ab' forModal='true' header="some heading" footer="some footer" size="500x300" maskColor="#34322"  modalBackgroundColor="lightgray" closeButton=true afterOpening="abOpened()" afterClosing ="abClosed()" beforeOpening="abBeforeOpening()" beforeClosing="abBeforeClosing()">
+god is great<br>
+god is great<br>
+god is great<br>
+god is great<br>
+god is great<br>
+god is great<br>
+god is great<br>
+god is great<br>
+god is great<br>
+god is great<br>
+god is great<br>
+<input type='text' id='myTextBox' value='Great'>
+god is great<br>
+god is great<br>
+god is great<br>
+god is great<br>
+god is great<br>
+god is great<br>
+god is great<br>
+</div>
+<hr>
+<h1>MyJRock Validations</h1>
+<form id="someForm" action="/whatever" onsubmit="return doSomething()">
+    Name<input type="text" name ="nm" id ="nm">
+    <span id="nmErrorSection" style="color:red"></span><br>
+    Address<span id="adErrorSection" style="color:red"></span>
+    <textarea name="ad" id="ad"></textarea>
+    <br>
+    Select city 
+    <select id="ct" name="ct">
+        <option value="-1">Select city</option>
+        <option value="1">Ujjain</option>
+        <option value="2">Indore</option>
+        <option value="3">Dewas</option>
+    </select><span id="ctErrorSection" style="color:red"></span>
+    <br>
+Gender &nbsp;&nbsp;&nbsp;
+Male<input type="radio" name="gender" id="ml" value="M"> &nbsp;
+Female<input type="radio" name="gender" id="fe" value="F">&nbsp;&nbsp;
+<span id="genderErrorSection" style="color:red"></span>
+<br>
+<input type="checkbox" name="agree" id="ag" value="Y"><br>
+<button type="submit">Register</button>
+</form>
+<hr>
+</body>
+</html>
