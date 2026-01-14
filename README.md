@@ -18,7 +18,7 @@ MyJRock helps developers perform AJAX requests, create modals, validate forms, r
 ### 3. UI Plugins
 - Modal system with attributes  
 - Accordion with automatic initialization  
-- Grid plugin (if included)  
+- Grid plugin 
 - Auto `<select>` population  
 
 ### 4. Form Validation Engine
